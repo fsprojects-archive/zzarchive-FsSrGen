@@ -1,0 +1,21 @@
+{
+    "version": "1.0.0",
+    "compilationOptions": {
+        "emitEntryPoint": true
+    },
+
+    "compilerName": "fsc",
+    "compileFiles": [
+        "Program.fs"
+    ],
+
+    "dependencies": {
+        "System.Xml.XmlDocument": "4.0.1-rc2-23808",
+        "NETStandard.Library": "1.0.0-rc2-23805",
+        "FSharp.Core": "4.0.0.1"
+    },
+
+    "frameworks": {
+        "net46" : { }
+    }
+}
