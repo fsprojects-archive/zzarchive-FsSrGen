@@ -355,7 +355,8 @@ open Printf
                     Err(filename,line,sprintf "String '%s' already appears on line %d with identifier '%s' - each string must be unique" str prevLine prevIdent)
                 allStrs.Add(str,(line,ident))
             
-            use out = new System.IO.StreamWriter(outFilename)
+            use outStream = System.IO.File.Create(outFilename)
+            use out = new System.IO.StreamWriter(outStream)
             fprintfn out "// This is a generated file; the original input is '%s'" filename
             fprintfn out "namespace %s" justfilename
             fprintfn out "%s" stringBoilerPlatePrefix
