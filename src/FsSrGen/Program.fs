@@ -413,7 +413,8 @@ open Printf
                 xnc.AppendChild(xd.CreateTextNode(netFormatString)) |> ignore
                 xd.LastChild.AppendChild(xn) |> ignore
             )
-            xd.Save(outXmlFilename)
+            use outXmlStream = System.IO.File.Create(outXmlFilename)
+            xd.Save(outXmlStream)
             0
         with 
             e -> JustPrintErr(filename, 0, sprintf "An exception occurred when processing '%s': %s" filename e.Message)
