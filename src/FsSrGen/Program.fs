@@ -325,10 +325,7 @@ open Printf
     // END BOILERPLATE        
     "            
 
-    let RunMain(args:string array) =
-        let filename = System.IO.Path.GetFullPath(args.[0])  // TODO args validation
-        let outFilename = System.IO.Path.GetFullPath(args.[1])  // TODO args validation
-        let outXmlFilename = System.IO.Path.GetFullPath(args.[2])  // TODO args validation
+    let RunMain(filename, outFilename, outXmlFilename) =
         try
             let justfilename = System.IO.Path.GetFileNameWithoutExtension(filename)
             if justfilename |> Seq.exists (fun c -> not(System.Char.IsLetterOrDigit(c))) then
@@ -425,4 +422,16 @@ namespace MainImpl
 module MainStuff =
 
     [<EntryPoint>]
-    let Main(args) = FSSRGen.Implementation.RunMain(args)
+    let Main(args) = 
+
+        match args |> List.ofArray with
+        | [ inputFile; outFile; outXml ] ->
+            let filename = System.IO.Path.GetFullPath(inputFile)  // TODO args validation
+            let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
+            let outXmlFilename = System.IO.Path.GetFullPath(outXml)  // TODO args validation
+
+            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename)
+        | _ ->
+            printfn "Error: invalid arguments."
+            printfn "Usage: <INPUTFILE> <OUTPUTFILE> <OUTXMLFILE>"
+            1
