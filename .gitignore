@@ -1,5 +1,8 @@
 ### Repo-specific things ###
 
+# generated FsSrGen output files require a placeholder
+test/use-dotnet-fssrgen-as-tool/FSComp.fs
+test/use-dotnet-fssrgen-as-tool/FSComp.resx
 
 ### VisualStudio.gitignore from https://raw.githubusercontent.com/github/gitignore/master/VisualStudio.gitignore ###
 
