@@ -14,9 +14,13 @@ Build FsSrGen.exe
 
 
 Build dotnet-fssrgen tool
------------------
+-------------------------
 
 1. `dotnet restore`
 2. `cd src/dotnet-fssrgen`
 3. `dotnet build`
 
+Run Tests 
+--------
+
+run `scripts\run_tests`
