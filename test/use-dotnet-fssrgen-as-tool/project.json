@@ -6,8 +6,22 @@
 
     "compilerName": "fsc",
     "compileFiles": [
+        "FSComp.fs",
         "Program.fs"
     ],
+
+    "resourceFiles": [
+        "FSComp.resx"
+    ],
+
+    "tools": {
+        "dotnet-fssrgen": { "version": "2.0.0-rc3" }
+    },
+
+    "scripts": {
+        "precompile": [
+        ]
+    },
 
     "dependencies": {
         "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-151221",
