@@ -236,9 +236,20 @@ open Microsoft.FSharp.Text
 open Microsoft.FSharp.Collections
 open Printf
 "
-    let StringBoilerPlate filename = @"            
+    let StringBoilerPlate filename targetFw =
+
+        let getAssemblyCmd = 
+            if targetFw = "DNXCORE50" then
+                "typeof<SR>.GetTypeInfo().Assembly"
+            else
+                "System.Reflection.Assembly.GetExecutingAssembly()"
+
+        let getTypeInfoCmd =
+            if targetFw = "DNXCORE50" then ".GetTypeInfo()" else ""
+
+        @"            
     // BEGIN BOILERPLATE        
-    static let resources = lazy (new System.Resources.ResourceManager(""" + filename + @""", System.Reflection.Assembly.GetExecutingAssembly()))
+    static let resources = lazy (new System.Resources.ResourceManager(""" + filename + @""", " + getAssemblyCmd + @"))
 
     static let GetString(name:string) =        
         let s = resources.Value.GetString(name, System.Globalization.CultureInfo.CurrentUICulture)
@@ -255,13 +266,13 @@ open Printf
 
     static let isNamedType(ty:System.Type) = not (ty.IsArray ||  ty.IsByRef ||  ty.IsPointer)
     static let isFunctionType (ty1:System.Type)  = 
-        isNamedType(ty1) && ty1.IsGenericType && (ty1.GetGenericTypeDefinition()).Equals(funTyC)
+        isNamedType(ty1) && ty1" + getTypeInfoCmd + @".IsGenericType && (ty1.GetGenericTypeDefinition()).Equals(funTyC)
 
     static let rec destFunTy (ty:System.Type) =
         if isFunctionType ty then 
             ty, ty.GetGenericArguments() 
         else
-            match ty.BaseType with 
+            match ty" + getTypeInfoCmd + @".BaseType with 
             | null -> failwith ""destFunTy: not a function type"" 
             | b -> destFunTy b 
 
@@ -361,7 +372,7 @@ open Printf
 
             let theResourceName = match projectNameOpt with Some p -> sprintf "%s.%s" p justfilename | None -> justfilename
 
-            fprintfn out "%s" (StringBoilerPlate theResourceName)
+            fprintfn out "%s" (StringBoilerPlate theResourceName targetFw)
             // gen each resource method
             stringInfos |> Seq.iter (fun (lineNum, (optErrNum,ident), str, holes, netFormatString) ->
                 let formalArgs = new System.Text.StringBuilder()
