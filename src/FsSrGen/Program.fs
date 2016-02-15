@@ -451,7 +451,7 @@ module MainStuff =
             let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
             let outXmlFilename = System.IO.Path.GetFullPath(outXml)  // TODO args validation
 
-            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, targetFw, Some projectName)
+            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, (targetFw.ToUpper()), Some projectName)
 
         | _ ->
             printfn "Error: invalid arguments."
