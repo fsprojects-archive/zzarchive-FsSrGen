@@ -3,14 +3,15 @@
 open System
 open System.Reflection
 open System.Resources
+open Xunit
 
-[<EntryPoint>]
-let main argv = 
-
+[<Fact>]
+let ``simple with string argument``() =
     let msg = FSComp.SR.sayHello "World"
-    printfn "%s" msg
+    Assert.Equal("Hello 'World'!", msg)
 
+[<Fact>]
+let ``tupled with string argument``() =
     let errNum,errMsg = FSComp.SR.invalidName "Kilo"
-    printfn "Err %i: %s" errNum errMsg
-
-    0
+    Assert.Equal(203, errNum)
+    Assert.Equal("Invalid name 'Kilo'", errMsg)

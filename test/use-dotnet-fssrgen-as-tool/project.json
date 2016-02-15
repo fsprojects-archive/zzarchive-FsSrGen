@@ -1,8 +1,5 @@
 {
     "version": "1.0.0",
-    "compilationOptions": {
-        "emitEntryPoint": true
-    },
 
     "compilerName": "fsc",
     "compileFiles": [
@@ -23,7 +20,13 @@
         ]
     },
 
+    "testRunner": "xunit",
+
     "dependencies": {
+
+        "xunit": "2.1.0",
+        "dotnet-test-xunit": "1.0.0-dev-48273-16",
+
         "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-151221",
         "NETStandard.Library": "1.0.0-rc2-23805"
     },
