@@ -15,7 +15,7 @@
     ],
 
     "tools": {
-        "dotnet-fssrgen": { "version": "2.0.0-rc3" }
+        "dotnet-fssrgen": { "version": "2.0.0-rc4" }
     },
 
     "scripts": {
