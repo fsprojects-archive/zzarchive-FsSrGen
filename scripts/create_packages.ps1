@@ -17,7 +17,7 @@ if (-not $?) {
 
 cd "$repoDir\src\FsSrGen"
 
-dotnet pack -c Release
+dotnet pack -c Release --output "$repoDir\bin\packages"
 if (-not $?) {
 	exit 1
 }
@@ -26,7 +26,7 @@ if (-not $?) {
 
 cd "$repoDir\src\FSharp.SRGen.Build.Tasks"
 
-dotnet pack -c Release
+dotnet pack -c Release --output "$repoDir\bin\packages"
 if (-not $?) {
 	exit 1
 }
@@ -35,7 +35,7 @@ if (-not $?) {
 
 cd "$repoDir\src\dotnet-fssrgen"
 
-dotnet pack -c Release
+dotnet pack -c Release --output "$repoDir\bin\packages"
 if (-not $?) {
 	exit 1
 }
