@@ -17,6 +17,7 @@
 
     "scripts": {
         "precompile": [
+            "dotnet fssrgen \"%project:Directory%\\FSComp.txt\" \"%project:Directory%\\FSComp.fs\"  \"%project:Directory%\\FSComp.resx\" %compile:TargetFramework% \"%project:Name%\""
         ]
     },
 
