@@ -325,7 +325,7 @@ open Printf
     // END BOILERPLATE        
     "            
 
-    let RunMain(filename, outFilename, outXmlFilename) =
+    let RunMain(filename, outFilename, outXmlFilename, targetFw, projectNameOpt) =
         try
             let justfilename = System.IO.Path.GetFileNameWithoutExtension(filename)
             if justfilename |> Seq.exists (fun c -> not(System.Char.IsLetterOrDigit(c))) then
@@ -358,7 +358,10 @@ open Printf
             fprintfn out "namespace %s" justfilename
             fprintfn out "%s" stringBoilerPlatePrefix
             fprintfn out "type internal SR private() ="
-            fprintfn out "%s" (StringBoilerPlate justfilename)
+
+            let theResourceName = match projectNameOpt with Some p -> sprintf "%s.%s" p justfilename | None -> justfilename
+
+            fprintfn out "%s" (StringBoilerPlate theResourceName)
             // gen each resource method
             stringInfos |> Seq.iter (fun (lineNum, (optErrNum,ident), str, holes, netFormatString) ->
                 let formalArgs = new System.Text.StringBuilder()
@@ -430,8 +433,16 @@ module MainStuff =
             let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
             let outXmlFilename = System.IO.Path.GetFullPath(outXml)  // TODO args validation
 
-            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename)
+            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, "NET46", None)
+
+        | [ inputFile; outFile; outXml; targetFw; projectName ] ->
+            let filename = System.IO.Path.GetFullPath(inputFile)  // TODO args validation
+            let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
+            let outXmlFilename = System.IO.Path.GetFullPath(outXml)  // TODO args validation
+
+            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, targetFw, Some projectName)
+
         | _ ->
             printfn "Error: invalid arguments."
-            printfn "Usage: <INPUTFILE> <OUTPUTFILE> <OUTXMLFILE>"
+            printfn "Usage: <INPUTFILE> <OUTPUTFILE> <OUTXMLFILE> <TARGETFW> <PROJECTNAME>"
             1
