@@ -21,7 +21,7 @@ build_script:
   - ps: .\scripts\create_packages.ps1
 
 artifacts:
-  - path: "bin\packages\*.nupkg"
+  - path: 'bin\packages\*.nupkg'
 
 test: off 
 version: 0.0.1.{build}
