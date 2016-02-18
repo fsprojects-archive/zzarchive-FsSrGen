@@ -11,7 +11,7 @@ Copyright (C) Microsoft Corporation. Apache 2.0 License.
 -->
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <UsingTask TaskName="FsSrGen" AssemblyFile="FSharp.SRGen.Build.Tasks.dll"/>
+  <UsingTask TaskName="FsSrGen" AssemblyFile="$(MSBuildThisFileDirectory)..\lib\net46\FSharp.SRGen.Build.Tasks.dll"/>
   <PropertyGroup>
     <PrepareForBuildDependsOn>ProcessFsSrGen;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
   </PropertyGroup>
