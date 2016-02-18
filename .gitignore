@@ -1,5 +1,7 @@
 ### Repo-specific things ###
 
+scripts/obtain/install.*
+
 # generated FsSrGen output files require a placeholder
 test/use-dotnet-fssrgen-as-tool/FSComp.fs
 test/use-dotnet-fssrgen-as-tool/FSComp.resx
