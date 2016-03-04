@@ -446,6 +446,13 @@ module MainStuff =
 
             FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, "NET46", None)
 
+        | [ inputFile; outFile; outXml; targetFw ] ->
+            let filename = System.IO.Path.GetFullPath(inputFile)  // TODO args validation
+            let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
+            let outXmlFilename = System.IO.Path.GetFullPath(outXml)  // TODO args validation
+
+            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, (targetFw.ToUpper()), None)
+
         | [ inputFile; outFile; outXml; targetFw; projectName ] ->
             let filename = System.IO.Path.GetFullPath(inputFile)  // TODO args validation
             let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
