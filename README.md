@@ -1,5 +1,3 @@
-[![Issue Stats](http://issuestats.com/github/fsprojects/FsSrGen/badge/issue)](http://issuestats.com/github/fsprojects/FsSrGen)
-[![Issue Stats](http://issuestats.com/github/fsprojects/FsSrGen/badge/pr)](http://issuestats.com/github/fsprojects/FsSrGen)
 
 [![Travis build status](https://travis-ci.org/fsprojects/FsSrGen.png)](https://travis-ci.org/fsprojects/FsSrGen)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/kn4kq6skg1xyfopw?svg=true)](https://ci.appveyor.com/project/sergey-tihon/fssrgen/)
