@@ -13,9 +13,9 @@ if (-not $?) {
 	exit 1
 }
 
-# create src/FsSrGen package
+# create src/fssrgen package
 
-cd "$repoDir\src\FsSrGen"
+cd "$repoDir\src\fssrgen"
 
 dotnet pack -c Release --output "$repoDir\bin\packages"
 if (-not $?) {
