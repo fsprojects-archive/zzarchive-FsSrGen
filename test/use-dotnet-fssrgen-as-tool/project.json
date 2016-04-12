@@ -12,28 +12,21 @@
     ],
 
     "tools": {
-        "dotnet-fssrgen": { "version": "2.0.0-rc6" }
-    },
-
-    "scripts": {
-        "precompile": [
-            "dotnet fssrgen \"%project:Directory%\\FSComp.txt\" \"%project:Directory%\\FSComp.fs\"  \"%project:Directory%\\FSComp.resx\" %compile:TargetFramework% \"%project:Name%\""
-        ]
+        "dotnet-fssrgen": { "version": "2.1.0" }
     },
 
     "testRunner": "xunit",
 
     "dependencies": {
-
         "xunit": "2.1.0",
         "dotnet-test-xunit": "1.0.0-dev-48273-16",
 
-        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-151221",
-        "NETStandard.Library": "1.0.0-rc2-23805"
+        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160316",
+        "NETStandard.Library": "1.0.0-rc2-23925"
     },
 
     "frameworks": {
-        "dnxcore50": { 
+        "netstandard1.5": { 
             "imports": "portable-net45+win8"
         }
     }

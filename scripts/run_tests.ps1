@@ -13,14 +13,16 @@ if (-not $?) {
 	exit 1
 }
 
-# build
-
-dotnet build
+# run tool
+$testProjDir = $pwd
+$fw = "DNXCORE50"
+$testProjName = "use-dotnet-fssrgen-as-tool"
+dotnet fssrgen "$testProjDir\FSComp.txt" "$testProjDir\FSComp.fs" "$testProjDir\FSComp.resx" $fw "$testProjName"
 if (-not $?) {
 	exit 1
 }
 
-# build another time, because .resx are built before precompile event
+# build
 
 dotnet build
 if (-not $?) {

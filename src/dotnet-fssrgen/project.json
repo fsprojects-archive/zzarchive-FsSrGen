@@ -10,12 +10,20 @@
     ],
 
     "dependencies": {
-        "System.Xml.XmlDocument": "4.0.1-rc2-23805",
+        "System.Xml.XmlDocument": "4.0.1-rc2-23925",
         "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160316",
-        "NETStandard.Library": "1.0.0-rc2-23805"
+        "Microsoft.NETCore.App": {
+            "type": "platform",
+            "version": "1.0.0-rc2-23925"
+        }
     },
 
     "frameworks": {
-        "dnxcore50": { }
+        "netstandard1.5": {
+            "imports": [
+                "portable-net45+win8",
+                "dnxcore50"
+            ]
+        }
     }
 }
