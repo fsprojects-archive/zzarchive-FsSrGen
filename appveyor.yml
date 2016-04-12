@@ -18,6 +18,7 @@ install:
 
 build_script:
   - ps: .\scripts\create_packages.ps1
+  - ps: .\scripts\run_tests_task.ps1
 
 artifacts:
   - path: 'bin\packages\*.nupkg'
