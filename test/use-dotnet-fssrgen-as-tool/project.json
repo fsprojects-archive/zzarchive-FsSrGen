@@ -22,12 +22,21 @@
         "dotnet-test-xunit": "1.0.0-dev-48273-16",
 
         "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160316",
-        "NETStandard.Library": "1.0.0-rc2-23925"
+        "Microsoft.NETCore.App": {
+            "type": "platform",
+            "version": "1.0.0-rc2-23925"
+        },
+        
+        "System.Runtime.Serialization.Primitives": "4.1.1-rc2-23925"
     },
 
     "frameworks": {
         "netstandard1.5": { 
-            "imports": "portable-net45+win8"
+            "imports": [
+                "dnxcore50",
+                "dotnet5.4",
+                "portable-net451+win8"
+             ]
         }
     }
 }
