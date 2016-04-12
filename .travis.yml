@@ -1,22 +1,42 @@
-language: c
+language: c++
 
-# Use Ubuntu 14.04
+#dotnet cli require Ubuntu 14.04
 sudo: required
 dist: trusty
 
+#dotnet cli require OSX 10.10
+osx_image: xcode7.1
+
+addons:
+  apt:
+    packages:
+    - gettext
+    - libcurl4-openssl-dev
+    - libicu-dev
+    - libssl-dev
+    - libunwind8
+    - zlib1g
+
+os:
+  - osx
+  - linux
+
 env:
   matrix:
-    - USE_DOTNET_CLI_VERSION: 1.0.0.001461
+    - CLI_VERSION: 1.0.0-beta-002071
 
 install:
-  # download install script from dotnet/cli repo
-  - mkdir -p "scripts/obtain"
-  - wget -O "./scripts/obtain/install.sh" "https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/install.sh"
-  # install a specific dotnet/cli version in DOTNET_INSTALL_DIR directory
-  - ./scripts/obtain/install.sh --channel beta -version $USE_DOTNET_CLI_VERSION --destination "$(pwd)/.dotnet"
+  # Download script to install dotnet cli
+  - curl -L --create-dirs https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/install.sh -o ./scripts/obtain/install.sh
+  - find ./scripts -name "*.sh" -exec chmod +x {} \;
+  - export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
+  # use bash to workaround bug https://github.com/dotnet/cli/issues/1725
+  - sudo bash ./scripts/obtain/install.sh --channel "preview" --version "$CLI_VERSION" --install-dir "$DOTNET_INSTALL_DIR" --no-path
+  # add dotnet to PATH
+  - export PATH="$DOTNET_INSTALL_DIR:$PATH"
   # show current dotnet info
   - echo "Using dotnet '$(which dotnet)'"
-  - dotnet --version
+  - dotnet --info
 
 script: 
   - dotnet restore
