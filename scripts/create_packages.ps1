@@ -13,20 +13,11 @@ if (-not $?) {
 	exit 1
 }
 
-# restore workaround 1
-
-cd "$repoDir\src\workaround1"
-
-dotnet restore --packages packages
-if (-not $?) {
-	exit 1
-}
-
 # create src/fssrgen package
 
 cd "$repoDir\src\fssrgen"
 
-dotnet pack -c Release --output "$repoDir\bin\packages"
+dotnet --verbose pack -c Release --output "$repoDir\bin\packages"
 if (-not $?) {
 	exit 1
 }
@@ -35,7 +26,7 @@ if (-not $?) {
 
 cd "$repoDir\src\FSharp.SRGen.Build.Tasks"
 
-dotnet pack -c Release --output "$repoDir\bin\packages"
+dotnet --verbose pack -c Release --output "$repoDir\bin\packages"
 if (-not $?) {
 	exit 1
 }
@@ -44,7 +35,7 @@ if (-not $?) {
 
 cd "$repoDir\src\dotnet-fssrgen"
 
-dotnet pack -c Release --output "$repoDir\bin\packages"
+dotnet --verbose pack -c Release --output "$repoDir\bin\packages"
 if (-not $?) {
 	exit 1
 }

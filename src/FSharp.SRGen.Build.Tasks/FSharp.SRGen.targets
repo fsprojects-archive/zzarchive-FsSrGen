@@ -30,6 +30,7 @@ Copyright (C) Microsoft Corporation. Apache 2.0 License.
       ToolPath="$(FsSrGenToolPath)"
       OutputFsFile="$(IntermediateOutputPath)%(FsSrGen.Filename).fs"
       OutputResxFile="$(IntermediateOutputPath)%(FsSrGen.Filename).resx"
+      ProjectName="$(FsSrGenProjectName)"
       >
     </FsSrGen>
   </Target>

@@ -9,6 +9,7 @@ type FsSrGen() =
     inherit ToolTask()
     let mutable inputFile  : string = null
     let mutable toolPath : string = null
+    let mutable projectName : string = null
     let mutable outputFsFile : string = null
     let mutable outputResxFile : string = null
     [<Required>]
@@ -30,7 +31,11 @@ type FsSrGen() =
     member this.ToolPath
         with get ()  = toolPath
         and  set (s) = toolPath <- s
-        
+
+    member this.ProjectName
+        with get ()  = projectName
+        and  set (s) = projectName <- s
+
     // ToolTask methods
     override this.ToolName = "fssrgen.exe"
 
@@ -42,5 +47,7 @@ type FsSrGen() =
         builder.AppendSwitchIfNotNull(" ", inputFile)
         builder.AppendSwitchIfNotNull(" ", outputFsFile)
         builder.AppendSwitchIfNotNull(" ", outputResxFile)
+        builder.AppendSwitchIfNotNull(" ", projectName)
+        
         let args = builder.ToString()
         args

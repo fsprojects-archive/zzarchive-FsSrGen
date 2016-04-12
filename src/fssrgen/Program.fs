@@ -236,23 +236,26 @@ open Microsoft.FSharp.Text
 open Microsoft.FSharp.Collections
 open Printf
 "
-    let StringBoilerPlate filename targetFw =
+    let StringBoilerPlate filename =
 
-        let getAssemblyCmd = 
-            if ["DNXCORE50"; "NETSTANDARD1_5"] |> List.contains targetFw then
-                "typeof<SR>.GetTypeInfo().Assembly"
-            else
-                "System.Reflection.Assembly.GetExecutingAssembly()"
-
-        let getTypeInfoCmd =
-            if ["DNXCORE50"; "NETSTANDARD1_5"] |> List.contains targetFw then
-                ".GetTypeInfo()"
-            else
-                ""
-
-        @"            
+        @"
     // BEGIN BOILERPLATE        
-    static let resources = lazy (new System.Resources.ResourceManager(""" + filename + @""", " + getAssemblyCmd + @"))
+    
+    static let getCurrentAssembly () =
+#if DNXCORE50 || NETSTANDARD1_5
+        typeof<SR>.GetTypeInfo().Assembly
+#else
+        System.Reflection.Assembly.GetExecutingAssembly()
+#endif
+        
+    static let getTypeInfo (t: System.Type) =
+#if DNXCORE50 || NETSTANDARD1_5
+        t.GetTypeInfo()
+#else
+        t
+#endif
+    
+    static let resources = lazy (new System.Resources.ResourceManager(""" + filename + @""", getCurrentAssembly()))
 
     static let GetString(name:string) =        
         let s = resources.Value.GetString(name, System.Globalization.CultureInfo.CurrentUICulture)
@@ -269,13 +272,13 @@ open Printf
 
     static let isNamedType(ty:System.Type) = not (ty.IsArray ||  ty.IsByRef ||  ty.IsPointer)
     static let isFunctionType (ty1:System.Type)  = 
-        isNamedType(ty1) && ty1" + getTypeInfoCmd + @".IsGenericType && (ty1.GetGenericTypeDefinition()).Equals(funTyC)
+        isNamedType(ty1) && getTypeInfo(ty1).IsGenericType && (ty1.GetGenericTypeDefinition()).Equals(funTyC)
 
     static let rec destFunTy (ty:System.Type) =
         if isFunctionType ty then 
             ty, ty.GetGenericArguments() 
         else
-            match ty" + getTypeInfoCmd + @".BaseType with 
+            match getTypeInfo(ty).BaseType with 
             | null -> failwith ""destFunTy: not a function type"" 
             | b -> destFunTy b 
 
@@ -339,7 +342,7 @@ open Printf
     // END BOILERPLATE        
     "            
 
-    let RunMain(filename, outFilename, outXmlFilename, targetFw, projectNameOpt) =
+    let RunMain(filename, outFilename, outXmlFilename, projectNameOpt) =
         try
             let justfilename = System.IO.Path.GetFileNameWithoutExtension(filename)
             if justfilename |> Seq.exists (fun c -> not(System.Char.IsLetterOrDigit(c))) then
@@ -375,7 +378,7 @@ open Printf
 
             let theResourceName = match projectNameOpt with Some p -> sprintf "%s.%s" p justfilename | None -> justfilename
 
-            fprintfn out "%s" (StringBoilerPlate theResourceName targetFw)
+            fprintfn out "%s" (StringBoilerPlate theResourceName)
             // gen each resource method
             stringInfos |> Seq.iter (fun (lineNum, (optErrNum,ident), str, holes, netFormatString) ->
                 let formalArgs = new System.Text.StringBuilder()
@@ -447,23 +450,16 @@ module MainStuff =
             let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
             let outXmlFilename = System.IO.Path.GetFullPath(outXml)  // TODO args validation
 
-            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, "NET46", None)
+            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, None)
 
-        | [ inputFile; outFile; outXml; targetFw ] ->
+        | [ inputFile; outFile; outXml; projectName ] ->
             let filename = System.IO.Path.GetFullPath(inputFile)  // TODO args validation
             let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
             let outXmlFilename = System.IO.Path.GetFullPath(outXml)  // TODO args validation
 
-            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, (targetFw.ToUpper()), None)
-
-        | [ inputFile; outFile; outXml; targetFw; projectName ] ->
-            let filename = System.IO.Path.GetFullPath(inputFile)  // TODO args validation
-            let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
-            let outXmlFilename = System.IO.Path.GetFullPath(outXml)  // TODO args validation
-
-            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, (targetFw.ToUpper()), Some projectName)
+            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, Some projectName)
 
         | _ ->
             printfn "Error: invalid arguments."
-            printfn "Usage: <INPUTFILE> <OUTPUTFILE> <OUTXMLFILE> <TARGETFW> <PROJECTNAME>"
+            printfn "Usage: <INPUTFILE> <OUTPUTFILE> <OUTXMLFILE> <PROJECTNAME>"
             1

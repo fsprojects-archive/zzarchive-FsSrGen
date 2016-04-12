@@ -1,0 +1,43 @@
+{
+    "version": "1.0.0",
+    
+    "compilationOptions": {
+        "emitEntryPoint": true
+    },
+
+    "compilerName": "fsc",
+    "compileFiles": [
+        "FSComp.fs",
+        "Program.fs"
+    ],
+
+    "resourceFiles": [
+        "FSComp.resx"
+    ],
+
+    "dependencies": {
+        "NUnit": "3.2.0",
+        "NUnitLite": "3.2.0"
+    },
+
+    "frameworks": {
+        "net46": {
+            "dependencies": {
+                "FSharp.Core": "4.0.0.1"
+            }
+        },
+        "netstandard1.5": { 
+            "dependencies": {
+                "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160316",
+                "Microsoft.NETCore.App": {
+                    "type": "platform",
+                    "version": "1.0.0-rc2-23925"
+                }
+            },
+            "imports": [
+                "dnxcore50",
+                "portable-net451+win8"
+             ]
+        }
+    }
+}

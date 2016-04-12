@@ -3,9 +3,12 @@
 scripts/obtain/install.*
 .dotnet
 
-# generated FsSrGen output files require a placeholder
+# generated FsSrGen output files in tests
 test/use-dotnet-fssrgen-as-tool/FSComp.fs
 test/use-dotnet-fssrgen-as-tool/FSComp.resx
+
+test/use-fssrgen-as-msbuild-task/FSComp.fs
+test/use-fssrgen-as-msbuild-task/FSComp.resx
 
 ### VisualStudio.gitignore from https://raw.githubusercontent.com/github/gitignore/master/VisualStudio.gitignore ###
 

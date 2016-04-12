@@ -1,6 +1,7 @@
 {
-    "version": "2.1.0",
+    "version": "3.0.0",
     "compilationOptions": {
+        "additionalArguments": [ "--standalone" ],
         "emitEntryPoint": true
     },
 
@@ -8,10 +9,6 @@
     "compileFiles": [
         "../FsSrGen/Program.fs"
     ],
-
-    "packInclude": {
-        "lib/netstandard1.5/": "../workaround1/packages/Microsoft.FSharp.Core.netcore/1.0.0-alpha-160316/lib/DNXCore50/*"
-    },
 
     "dependencies": {
         "System.Xml.XmlDocument": "4.0.1-rc2-23925",
