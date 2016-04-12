@@ -1,7 +1,7 @@
 {
     "version": "2.1.0",
     "compilationOptions": {
-        "additionalArguments": [ "--standalone" ],
+        "additionalArguments": [ "--standalone" ]
     },
 
     "compilerName": "fsc",
@@ -21,7 +21,7 @@
         "net46" : { 
             "frameworkAssemblies": {
                 "Microsoft.Build.Framework": "",
-                "Microsoft.Build.Utilities.v4.0": "",
+                "Microsoft.Build.Utilities.v4.0": ""
             }
         }
     }
