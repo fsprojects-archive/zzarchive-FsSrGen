@@ -9,6 +9,10 @@
         "../FsSrGen/Program.fs"
     ],
 
+    "packInclude": {
+        "lib/netstandard1.5/": "../workaround1/packages/Microsoft.FSharp.Core.netcore/1.0.0-alpha-160316/lib/DNXCore50/*"
+    },
+
     "dependencies": {
         "System.Xml.XmlDocument": "4.0.1-rc2-23925",
         "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160316",

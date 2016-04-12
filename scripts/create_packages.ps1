@@ -6,9 +6,18 @@ Push-Location
 
 # restore
 
-cd $repoDir
+cd "$repoDir\src"
 
 dotnet restore
+if (-not $?) {
+	exit 1
+}
+
+# restore workaround 1
+
+cd "$repoDir\src\workaround1"
+
+dotnet restore --packages packages
 if (-not $?) {
 	exit 1
 }
