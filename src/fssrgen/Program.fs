@@ -239,13 +239,16 @@ open Printf
     let StringBoilerPlate filename targetFw =
 
         let getAssemblyCmd = 
-            if targetFw = "DNXCORE50" then
+            if ["DNXCORE50"; "NETSTANDARD1_5"] |> List.contains targetFw then
                 "typeof<SR>.GetTypeInfo().Assembly"
             else
                 "System.Reflection.Assembly.GetExecutingAssembly()"
 
         let getTypeInfoCmd =
-            if targetFw = "DNXCORE50" then ".GetTypeInfo()" else ""
+            if ["DNXCORE50"; "NETSTANDARD1_5"] |> List.contains targetFw then
+                ".GetTypeInfo()"
+            else
+                ""
 
         @"            
     // BEGIN BOILERPLATE        
