@@ -1,7 +1,6 @@
 {
-    "version": "3.0.0",
+    "version": "3.0.1",
     "compilationOptions": {
-        "additionalArguments": [ "--standalone" ],
         "emitEntryPoint": true
     },
 
@@ -12,7 +11,7 @@
 
     "dependencies": {
         "System.Xml.XmlDocument": "4.0.1-rc2-23925",
-        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160316",
+        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160412",
         "Microsoft.NETCore.App": {
             "type": "platform",
             "version": "1.0.0-rc2-23925"
