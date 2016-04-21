@@ -12,7 +12,7 @@
     ],
 
     "tools": {
-        "dotnet-fssrgen": { "version": "3.0.0" }
+        "dotnet-fssrgen": { "version": "3.0.1" }
     },
 
     "testRunner": "xunit",
