@@ -17,37 +17,28 @@
     },
 
     "tools": {
-        "dotnet-fssrgen": { "version": "3.1.*" },
+        "dotnet-fssrgen": { "version": "3.2.*" },
         "dotnet-compile-fsc": {
-            "version": "1.0.0-preview1-*",
-            "imports": [
-                "dnxcore50",
-                "portable-net45+win81",
-                "netstandard1.3"
-            ]
+            "version": "1.0.0-preview2-*",
+            "imports": "dnxcore50"
         }
     },
 
     "testRunner": "xunit",
 
     "dependencies": {
-        "xunit": "2.1.0",
-        "dotnet-test-xunit": "1.0.0-rc2-build10025",
-        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160509",
+        "xunit": "2.2.0-beta2-build3300",
+        "dotnet-test-xunit": "2.2.0-preview2-build1029",
+        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-*",
         "Microsoft.NETCore.App": {
             "type": "platform",
-            "version": "1.0.0-rc2-3002702"
+            "version": "1.0.0"
         }
     },
 
     "frameworks": {
         "netcoreapp1.0": { 
-            "imports": [
-                "dnxcore50",
-                "dotnet5.4",
-                "netstandardapp1.5",
-                "portable-net451+win8"
-             ]
+            "imports": "dnxcore50"
         }
     }
 }
