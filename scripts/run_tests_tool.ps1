@@ -8,7 +8,7 @@ cd "$repoDir\test\use-dotnet-fssrgen-as-tool"
 
 # restore
 
-dotnet restore --source "$repoDir\bin\packages\"
+dotnet restore -f "$repoDir\bin\packages\"
 if (-not $?) {
 	exit 1
 }

@@ -1,16 +1,21 @@
 {
     "version": "3.0.0",
-    "compilationOptions": {
-        "additionalArguments": [ "--standalone" ]
+    "buildOptions": {
+        "additionalArguments": [ "--standalone" ],
+        "compilerName": "fsc",
+        "compile": {
+            "includeFiles": [
+                "FsSrGen.fs"
+            ]
+        }
     },
 
-    "compilerName": "fsc",
-    "compileFiles": [
-        "FsSrGen.fs"
-    ],
-
-    "packInclude": {
-        "content/": "FSharp.SRGen.targets"
+    "packOptions": {
+        "files": {
+            "mappings": {
+                "content/": "FSharp.SRGen.targets"
+            }
+        }
     },
 
     "dependencies": {
@@ -24,5 +29,17 @@
                 "Microsoft.Build.Utilities.v4.0": ""
             }
         }
+    },
+
+    "tools": {
+        "dotnet-compile-fsc": {
+            "version": "1.0.0-preview1-*",
+            "imports": [
+                "dnxcore50",
+                "portable-net45+win81",
+                "netstandard1.3"
+            ]
+        }
     }
+    
 }

@@ -1,35 +1,47 @@
 {
     "version": "1.0.0",
 
-    "compilerName": "fsc",
-    "compileFiles": [
-        "FSComp.fs",
-        "Program.fs"
-    ],
-
-    "resourceFiles": [
-        "FSComp.resx"
-    ],
+    "buildOptions": {
+        "compilerName": "fsc",
+        "compile": {
+            "includeFiles": [
+                "FSComp.fs",
+                "Program.fs"
+            ]
+        },
+        "embed": {
+            "includeFiles": [
+                "FSComp.resx"
+            ]
+        }
+    },
 
     "tools": {
-        "dotnet-fssrgen": { "version": "3.0.1" }
+        "dotnet-fssrgen": { "version": "3.1.*" },
+        "dotnet-compile-fsc": {
+            "version": "1.0.0-preview1-*",
+            "imports": [
+                "dnxcore50",
+                "portable-net45+win81",
+                "netstandard1.3"
+            ]
+        }
     },
 
     "testRunner": "xunit",
 
     "dependencies": {
         "xunit": "2.1.0",
-        "dotnet-test-xunit": "1.0.0-dev-91790-12",
-
-        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160316",
+        "dotnet-test-xunit": "1.0.0-rc2-build10025",
+        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160509",
         "Microsoft.NETCore.App": {
             "type": "platform",
-            "version": "1.0.0-rc2-23925"
+            "version": "1.0.0-rc2-3002702"
         }
     },
 
     "frameworks": {
-        "netstandard1.5": { 
+        "netcoreapp1.0": { 
             "imports": [
                 "dnxcore50",
                 "dotnet5.4",
