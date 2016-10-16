@@ -1,4 +1,4 @@
 {
-  "projects": [ "src" ]
+  "projects": [ "src", "test" ]
 }
  
