@@ -1,6 +1,7 @@
 namespace FSSRGen
 
 module Implementation =
+
     let JustPrintErr(filename, line, msg) =
         printfn "%s(%d): error : %s" filename line msg
         
@@ -174,14 +175,14 @@ module Implementation =
                 i <- i + 2
             else
                 match txt.[i] with
-                | '{' -> sb.Append("{{") |> ignore
-                | '}' -> sb.Append("}}") |> ignore
-                | c -> sb.Append(c) |> ignore
+                | '{' -> sb.Append "{{" |> ignore
+                | '}' -> sb.Append "}}" |> ignore
+                | c -> sb.Append c |> ignore
                 i <- i + 1
         (!holes |> List.rev |> List.toArray, sb.ToString())
 
     let Unquote (s : string) =
-        if s.StartsWith("\"") && s.EndsWith("\"") then s.Substring(1, s.Length - 2)
+        if s.StartsWith "\"" && s.EndsWith "\"" then s.Substring(1, s.Length - 2)
         else failwith "error message string should be quoted"
 
     let ParseLine filename lineNum (txt:string) =
@@ -189,10 +190,10 @@ module Implementation =
         let identB = new System.Text.StringBuilder()
         let mutable i = 0
         // parse optional error number
-        if i < txt.Length && System.Char.IsDigit(txt.[i]) then
+        if i < txt.Length && System.Char.IsDigit txt.[i] then
             let numB = new System.Text.StringBuilder()
-            while i < txt.Length && System.Char.IsDigit(txt.[i]) do
-                numB.Append(txt.[i]) |> ignore
+            while i < txt.Length && System.Char.IsDigit txt.[i] do
+                numB.Append txt.[i] |> ignore
                 i <- i + 1
             errNum <- Some(int (numB.ToString()))
             if i = txt.Length || not(txt.[i] = ',') then
@@ -202,8 +203,8 @@ module Implementation =
         // parse short identifier
         if i < txt.Length && not(System.Char.IsLetter(txt.[i])) then
             Err(filename, lineNum, sprintf "The first character in the short identifier should be a letter, but found '%c'" txt.[i])
-        while i < txt.Length && System.Char.IsLetterOrDigit(txt.[i]) do
-            identB.Append(txt.[i]) |> ignore
+        while i < txt.Length && System.Char.IsLetterOrDigit txt.[i] do
+            identB.Append txt.[i] |> ignore
             i <- i + 1
         let ident = identB.ToString()
         if ident.Length = 0 then
@@ -219,9 +220,9 @@ module Implementation =
                 else
                     let str = 
                         try
-                            System.String.Format(Unquote(txt.Substring(i)))  // Format turns e.g '\n' into that char, but also requires that we 'escape' curlies in the original .txt file, e.g. "{{"
+                            System.String.Format(Unquote(txt.Substring i))  // Format turns e.g '\n' into that char, but also requires that we 'escape' curlies in the original .txt file, e.g. "{{"
                         with 
-                            e -> Err(filename, lineNum, sprintf "Error calling System.String.Format (note that curly braces must be escaped, and there cannot be trailing space on the line): >>>%s<<< -- %s" (txt.Substring(i)) e.Message)
+                            e -> Err(filename, lineNum, sprintf "Error calling System.String.Format (note that curly braces must be escaped, and there cannot be trailing space on the line): >>>%s<<< -- %s" (txt.Substring i) e.Message)
                     let holes, netFormatString = ComputeHoles filename lineNum str
                     (lineNum, (errNum,ident), str, holes, netFormatString)
 
@@ -350,7 +351,7 @@ open Printf
 
             let lines = System.IO.File.ReadAllLines(filename) 
                         |> Array.mapi (fun i s -> i,s) // keep line numbers
-                        |> Array.filter (fun (i,s) -> not(s.StartsWith("#")))  // filter out comments
+                        |> Array.filter (fun (i,s) -> not(s.StartsWith "#"))  // filter out comments
             let stringInfos = lines |> Array.map (fun (i,s) -> ParseLine filename i s)
             // now we have array of (lineNum, ident, str, holes, netFormatString)  // str has %d, netFormatString has {0}
             
@@ -369,7 +370,7 @@ open Printf
                     Err(filename,line,sprintf "String '%s' already appears on line %d with identifier '%s' - each string must be unique" str prevLine prevIdent)
                 allStrs.Add(str,(line,ident))
             
-            use outStream = System.IO.File.Create(outFilename)
+            use outStream = System.IO.File.Create outFilename
             use out = new System.IO.StreamWriter(outStream)
             fprintfn out "// This is a generated file; the original input is '%s'" filename
             fprintfn out "namespace %s" justfilename
@@ -385,17 +386,17 @@ open Printf
                 let actualArgs = new System.Text.StringBuilder()
                 let firstTime = ref true
                 let n = ref 0
-                formalArgs.Append("(") |> ignore
+                formalArgs.Append "(" |> ignore
                 for hole in holes do
                     if !firstTime then
                         firstTime := false
                     else
-                        formalArgs.Append(", ") |> ignore
-                        actualArgs.Append(" ") |> ignore
+                        formalArgs.Append ", " |> ignore
+                        actualArgs.Append " " |> ignore
                     formalArgs.Append(sprintf "a%d : %s" !n (HoleTypeToString hole)) |> ignore
                     actualArgs.Append(sprintf "a%d" !n) |> ignore
                     n := !n + 1
-                formalArgs.Append(")") |> ignore
+                formalArgs.Append ")" |> ignore
                 fprintfn out "    /// %s" str
                 fprintfn out "    /// (Originally from %s:%d)" filename (lineNum+1)
                 let justPercentsFromFormatString = 
@@ -407,7 +408,7 @@ open Printf
                               | _ -> failwith "Impossible HoleType") "") + ",,,"
                 let errPrefix = match optErrNum with
                                 | None -> ""
-                                | Some(n) -> sprintf "%d, " n
+                                | Some n -> sprintf "%d, " n
                 fprintfn out "    static member %s%s = (%sGetStringFunc(\"%s\",\"%s\") %s)" ident (formalArgs.ToString()) errPrefix ident justPercentsFromFormatString (actualArgs.ToString())
             )
             fprintfn out ""
@@ -425,13 +426,13 @@ open Printf
                 let xn = xd.CreateElement("data")
                 xn.SetAttribute("name",ident) |> ignore
                 xn.SetAttribute("xml:space","preserve") |> ignore
-                let xnc = xd.CreateElement("value")
-                xn.AppendChild(xnc) |> ignore
-                xnc.AppendChild(xd.CreateTextNode(netFormatString)) |> ignore
-                xd.LastChild.AppendChild(xn) |> ignore
+                let xnc = xd.CreateElement "value"
+                xn.AppendChild xnc |> ignore
+                xnc.AppendChild(xd.CreateTextNode netFormatString) |> ignore
+                xd.LastChild.AppendChild xn |> ignore
             )
-            use outXmlStream = System.IO.File.Create(outXmlFilename)
-            xd.Save(outXmlStream)
+            use outXmlStream = System.IO.File.Create outXmlFilename
+            xd.Save outXmlStream
             0
         with 
             e -> JustPrintErr(filename, 0, sprintf "An exception occurred when processing '%s': %s" filename e.Message)
@@ -442,20 +443,20 @@ namespace MainImpl
 module MainStuff =
 
     [<EntryPoint>]
-    let Main(args) = 
+    let Main args = 
 
         match args |> List.ofArray with
         | [ inputFile; outFile; outXml ] ->
-            let filename = System.IO.Path.GetFullPath(inputFile)  // TODO args validation
-            let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
-            let outXmlFilename = System.IO.Path.GetFullPath(outXml)  // TODO args validation
+            let filename = System.IO.Path.GetFullPath inputFile  // TODO args validation
+            let outFilename = System.IO.Path.GetFullPath outFile  // TODO args validation
+            let outXmlFilename = System.IO.Path.GetFullPath outXml  // TODO args validation
 
             FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, None)
 
         | [ inputFile; outFile; outXml; projectName ] ->
-            let filename = System.IO.Path.GetFullPath(inputFile)  // TODO args validation
-            let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
-            let outXmlFilename = System.IO.Path.GetFullPath(outXml)  // TODO args validation
+            let filename = System.IO.Path.GetFullPath inputFile  // TODO args validation
+            let outFilename = System.IO.Path.GetFullPath outFile  // TODO args validation
+            let outXmlFilename = System.IO.Path.GetFullPath outXml  // TODO args validation
 
             FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, Some projectName)
 

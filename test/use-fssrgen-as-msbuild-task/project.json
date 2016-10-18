@@ -1,6 +1,5 @@
 {
     "version": "1.0.0",
-    
     "buildOptions": {
         "emitEntryPoint": true,
         "compilerName": "fsc",
@@ -16,35 +15,31 @@
             ]
         }
     },
-
-    "dependencies": {
-        "NUnit": "3.2.0",
-        "NUnitLite": "3.2.0"
-    },
-
-    "frameworks": {
-        "net46": {
-            "dependencies": {
-                "FSharp.Core": "4.0.0.1"
-            }
-        },
-        "netstandard1.5": { 
-            "dependencies": {
-                "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-*",
-                "Microsoft.NETCore.App": {
-                    "type": "platform",
-                    "version": "1.0.0"
-                }
-            },
-            "imports": "dnxcore50"
-        }
-    },
-
     "tools": {
         "dotnet-compile-fsc": {
             "version": "1.0.0-preview2-*",
             "imports": "dnxcore50"
         }
+    },    
+    "dependencies": {
+        "NUnit": "3.5.0",
+        "NUnitLite": "3.5.0"
+    },
+    "frameworks": {
+        "net46": {
+            "dependencies": {   
+                "FSharp.Core": "4.0.0.1"
+            }
+        },
+        "netcoreapp1.0": { 
+            "dependencies": {
+                "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-*",
+                "Microsoft.NetCore.App":{
+                    "type":"platform",
+                    "version":"1.0.1"    
+                }
+            }
+        ,   "imports": "dnxcore50"
+        }
     }
-    
 }

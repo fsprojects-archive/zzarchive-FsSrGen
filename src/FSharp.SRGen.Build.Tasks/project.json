@@ -1,5 +1,5 @@
 {
-    "version": "3.0.0",
+    "version": "3.0.1",
     "buildOptions": {
         "additionalArguments": [ "--standalone" ],
         "compilerName": "fsc",
@@ -9,33 +9,33 @@
             ]
         }
     },
-
+    "tools": {
+        "dotnet-compile-fsc": "1.0.0-preview2-*"
+    },
     "packOptions": {
         "files": {
             "mappings": {
                 "content/": "FSharp.SRGen.targets"
             }
-        }
+        }        
     },
-
-    "dependencies": {
-        "FSharp.Core": "4.0.0.1"
-    },
-
     "frameworks": {
-        "net46" : { 
+        "net46" : {
+            "dependencies": {
+                "FSharp.Core": "4.0.0.1"
+            }, 
             "frameworkAssemblies": {
                 "Microsoft.Build.Framework": "",
                 "Microsoft.Build.Utilities.v4.0": ""
             }
         }
-    },
-
-    "tools": {
-        "dotnet-compile-fsc": {
-            "version": "1.0.0-preview2-*",
-            "imports": "dnxcore50"
+        ,"netstandard1.6":{
+            "dependencies": {
+                "NETStandard.Library": "1.6.0",
+                "microsoft.fsharp.core.netcore": "1.0.0-*",
+                "Microsoft.Build": "14.3.0",
+                "Microsoft.Build.Utilities.Core": "14.3.0"
+            }
         }
     }
-    
 }

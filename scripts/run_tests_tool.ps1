@@ -1,40 +1,32 @@
+# exists the script if the preceeding command failed
+function check-last { if(-not $?){ exit 1 }}
 
-#make path absolute
-$repoDir = Split-Path -parent (Split-Path -parent $PSCommandPath)
-
-Push-Location
-
-cd "$repoDir\test\use-dotnet-fssrgen-as-tool"
+$scriptDir = split-path $script:MyInvocation.MyCommand.Path
+$repoDir = split-path -parent $scriptdir
+$projName = "use-dotnet-fssrgen-as-tool"
+$testDir = "$repoDir\test\$projName"
 
 # restore
+dotnet restore $testDir  # -f "$repoDir\bin\packages"
+check-last  
 
-dotnet restore -f "$repoDir\bin\packages\"
-if (-not $?) {
-	exit 1
-}
+# the working directory needs to be changed to a dir where the 
+# project.json has 'fssrgen' listed as a tool so that it can
+# be called with 'dotnet fssrgen'
+$stored = $PWD
+cd $testDir
 
 # run tool
-$testProjDir = $pwd
-$testProjName = "use-dotnet-fssrgen-as-tool"
-dotnet fssrgen "$testProjDir\FSComp.txt" "$testProjDir\FSComp.fs" "$testProjDir\FSComp.resx" "$testProjName"
-if (-not $?) {
-	exit 1
-}
+dotnet fssrgen "$testDir\FSComp.txt" "$testDir\FSComp.fs" "$testDir\FSComp.resx" $projName
+
+cd $stored
 
 # build
-
-dotnet build
-if (-not $?) {
-	exit 1
-}
+dotnet build "$testDir"
+check-last  
 
 # run tests
-
-dotnet test
-if (-not $?) {
-	exit 1
-}
-
-Pop-Location
+dotnet test "$testDir"
+check-last  
 
 exit 0

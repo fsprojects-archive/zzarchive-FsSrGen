@@ -1,33 +1,33 @@
 {
-    "version": "3.2.0",
+    "title": "dotnet-fssrgen",    
+    "version": "3.2.1",
     "buildOptions": {
         "emitEntryPoint": true,
         "compilerName": "fsc",
         "compile": {
             "includeFiles": [
-                "../FsSrGen/Program.fs"
+                "../fssrgen/Program.fs"
             ]
         }
     },
-
-    "dependencies": {
-        "System.Xml.XmlDocument": "4.0.1",
-        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-*",
-        "Microsoft.NETCore.App": {
-            "type": "platform",
-            "version": "1.0.0"
-        }
-    },
-
     "tools": {
         "dotnet-compile-fsc": {
-            "version": "1.0.0-preview2-*",
+            "version":"1.0.0-preview2-*",
             "imports": "dnxcore50"
         }
     },
     "frameworks": {
         "netcoreapp1.0": {
-            "imports": "dnxcore50"
+            "imports": "dnxcore50",
+            "dependencies": {
+                "System.Xml.XmlDocument": "4.0.1",
+                "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-*",
+                "Microsoft.NETCore.App": {
+                    "type": "platform",
+                    "version": "1.0.1"
+                },
+                "NETStandard.Library": "1.6.0"
+            }
         }
     }
 }

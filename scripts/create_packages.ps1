@@ -1,47 +1,28 @@
+# exists the script if the preceeding command failed
+function check-last { if(-not $?){ exit 1 }}
 
-#make path absolute
-$repoDir = Split-Path -parent (Split-Path -parent $PSCommandPath)
-
-Push-Location
+$scriptDir = split-path $script:MyInvocation.MyCommand.Path
+$repoDir = split-path -parent $scriptdir
 
 # restore
+dotnet restore "$repoDir"
+check-last   
 
-cd "$repoDir\src"
+# create fssrgen package
+dotnet restore "$repoDir\src\fssrgen"
+dotnet --verbose pack "$repoDir\src\fssrgen" -c Release --output "$repoDir\bin\packages"
+check-last   
 
-dotnet restore
-if (-not $?) {
-	exit 1
-}
 
-# create src/fssrgen package
+# create FSharp.SRGen.Build.Tasks package
+dotnet restore "$repoDir\src\FSharp.SRGen.Build.Tasks" 
+dotnet --verbose pack "$repoDir\src\FSharp.SRGen.Build.Tasks" -c Release --output "$repoDir\bin\packages"
+check-last   
 
-cd "$repoDir\src\fssrgen"
 
-dotnet --verbose pack -c Release --output "$repoDir\bin\packages"
-if (-not $?) {
-	exit 1
-}
-
-# create src/FSharp.SRGen.Build.Tasks package
-
-cd "$repoDir\src\FSharp.SRGen.Build.Tasks"
-
-dotnet --verbose pack -c Release --output "$repoDir\bin\packages"
-if (-not $?) {
-	exit 1
-}
-
-# crete src/dotnet-fssrgen package
-
-cd "$repoDir\src\dotnet-fssrgen"
-
-dotnet --verbose pack -c Release --output "$repoDir\bin\packages"
-if (-not $?) {
-	exit 1
-}
-
-# Done
-
-Pop-Location
+# crete dotnet-fssrgen package
+dotnet restore "$repoDir\src\dotnet-fssrgen"
+dotnet --verbose pack "$repoDir\src\dotnet-fssrgen" -c Release --output "$repoDir\bin\packages"
+check-last  
 
 exit 0
