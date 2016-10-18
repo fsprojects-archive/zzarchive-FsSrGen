@@ -28,3 +28,11 @@ Run Tests
 --------
 
 run `scripts\run_tests`
+
+## Maintainer(s)
+
+- [@enricosada](https://github.com/enricosada)
+- [@cloudRoutine](https://github.com/cloudRoutine)
+- [@dsyme](https://github.com/dsyme)
+
+The default maintainer account for projects under "fsprojects" is [@fsprojectsgit](https://github.com/fsprojectsgit) - F# Community Project Incubation Space (repo management)
