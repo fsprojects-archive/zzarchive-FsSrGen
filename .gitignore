@@ -10,6 +10,8 @@ test/use-dotnet-fssrgen-as-tool/FSComp.resx
 test/use-fssrgen-as-msbuild-task/FSComp.fs
 test/use-fssrgen-as-msbuild-task/FSComp.resx
 
+*.nuget.props
+
 ### VisualStudio.gitignore from https://raw.githubusercontent.com/github/gitignore/master/VisualStudio.gitignore ###
 
 ## Ignore Visual Studio temporary files, build results, and

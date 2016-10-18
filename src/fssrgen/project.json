@@ -7,15 +7,15 @@
         "compile": {
             "includeFiles": [
                 "Program.fs"
-            ]
+            ]            
         }
     },
     "tools": {
         "dotnet-compile-fsc": {
-            "version": "1.0.0-preview2-*",
+            "version":"1.0.0-preview2-*",
             "imports": "dnxcore50"
         }
-    },
+    },   
     "frameworks": {
         "net46" : {
             "dependencies": {
@@ -23,7 +23,21 @@
             },
             "frameworkAssemblies": {
                 "System.Xml": ""
-            }
+            }        
+        },
+        "netcoreapp1.0": {
+            "imports": "dnxcore50",
+            "dependencies": {
+                "System.Xml.XmlDocument": "4.0.1",
+                "System.Reflection":"4.1.0",             	
+                "System.Reflection.Extensions":"4.0.1",
+                "Microsoft.Fsharp.Core.netcore": "1.0.0-alpha-*",
+                "Microsoft.NETcore.App":{
+                    "type":"platform",
+                    "version":"1.0.1"
+                },
+                "NETStandard.Library": "1.6.0"
+            }            
         }       
     }
 }

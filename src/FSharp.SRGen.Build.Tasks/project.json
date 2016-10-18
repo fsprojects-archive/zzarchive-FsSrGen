@@ -10,10 +10,7 @@
         }
     },
     "tools": {
-        "dotnet-compile-fsc": {
-            "version": "1.0.0-preview2-*",
-            "imports": "dnxcore50"
-        }
+        "dotnet-compile-fsc": "1.0.0-preview2-*"
     },
     "packOptions": {
         "files": {
@@ -22,14 +19,22 @@
             }
         }        
     },
-    "dependencies": {
-        "FSharp.Core": "4.0.0.1"
-    },
     "frameworks": {
-        "net46" : { 
+        "net46" : {
+            "dependencies": {
+                "FSharp.Core": "4.0.0.1"
+            }, 
             "frameworkAssemblies": {
                 "Microsoft.Build.Framework": "",
                 "Microsoft.Build.Utilities.v4.0": ""
+            }
+        }
+        ,"netstandard1.6":{
+            "dependencies": {
+                "NETStandard.Library": "1.6.0",
+                "microsoft.fsharp.core.netcore": "1.0.0-*",
+                "Microsoft.Build": "14.3.0",
+                "Microsoft.Build.Utilities.Core": "14.3.0"
             }
         }
     }
