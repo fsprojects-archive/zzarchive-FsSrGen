@@ -1,6 +1,9 @@
 {
-    "version": "3.0.1",
+    "title": "F# String Response Generator",
+    "version": "3.1.0",
+    "authors": ["Don Syme","Enrico Sada","Jared Hester"],
     "buildOptions": {
+        "outputName": "fssrgen",
         "emitEntryPoint": true,
         "compilerName": "fsc",
         "additionalArguments": [ "--standalone" ],
@@ -10,12 +13,28 @@
             ]            
         }
     },
+    "packOptions": {
+        "tags":[ "F#","FSharp","netcore","tooling","build" ],
+        "repository": {
+            "type": "git",
+            "url": "https://github.com/fsprojects/FsSrGen"
+        },
+        "licenseUrl": "https://github.com/fsprojects/FsSrGen/blob/master/LICENSE.md"
+    },    
     "tools": {
         "dotnet-compile-fsc": {
             "version":"1.0.0-preview2-*",
             "imports": "dnxcore50"
         }
     },   
+    "configurations": {
+        "Release": {
+            "buildOptions": {
+                "optimize": true
+            }
+        },
+        "Debug":{}        
+    },    
     "frameworks": {
         "net46" : {
             "dependencies": {

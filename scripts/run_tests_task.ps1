@@ -10,7 +10,7 @@ cd $testDir
 
 # restore testproject and tools from package 
 dotnet restore
-& "$repoDir\.nuget\nuget.exe" restore
+& "$repoDir\packages\Nuget.CommandLine\tools\nuget.exe" restore
 check-last  
 
 # run tool
