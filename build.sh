@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 if test "$OS" = "Windows_NT"
 then
   # use .Net
@@ -14,7 +15,7 @@ then
     exit $exit_code
   fi
 
-  packages/FAKE/tools/FAKE.exe build.fsx $@
+  packages/FAKE/tools/FAKE.exe build.fsx $@ --fsiargs -d:MONO build.fsx
 else
   # use mono
   if [[ ! -e ~/.config/.mono/certs ]]; then

@@ -28,23 +28,29 @@ before install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update               ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install openssl      ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew link --force openssl ; fi
-
-install:
-  # Download .NET Core SDK and add to PATH
   - export DOTNET_INSTALL_DIR="$PWD/.dotnetsdk"
   - mkdir -p "$DOTNET_INSTALL_DIR"
   - curl -L "$DOTNET_SDK_URL" | tar -xzv -C "$DOTNET_INSTALL_DIR"
   - export PATH="$DOTNET_INSTALL_DIR:$PATH"
-   
+
+# install:
+#   # Download .NET Core SDK and add to PATH
+#   - export DOTNET_INSTALL_DIR="$PWD/.dotnetsdk"
+#   - mkdir -p "$DOTNET_INSTALL_DIR"
+#   - curl -L "$DOTNET_SDK_URL" | tar -xzv -C "$DOTNET_INSTALL_DIR"
+#   - export PATH="$DOTNET_INSTALL_DIR:$PATH"
+
+# before_script: cd fssrgen
+
 # Build netcore packages
 script:
-  - dotnet --info
-  - cd src/
-  - dotnet restore --disable-parallel
-  - cd fssrgen
-  - dotnet --verbose pack -c Release --output "../../bin/packages"
-  - cd ../FSharp.SRGen.Build.Tasks
-  - dotnet --verbose pack -c Release --output "../../bin/packages"
-  - cd ../dotnet-fssrgen
-  - dotnet --verbose pack -c Release --output "../../bin/packages"
-  - ./build.sh NuGet
+#   - dotnet --info
+#   - cd src/
+#   - dotnet restore --disable-parallel
+#   - cd fssrgen
+#   - dotnet --verbose pack -c Release --output "../../bin/packages"
+#   - cd ../FSharp.SRGen.Build.Tasks
+#   - dotnet --verbose pack -c Release --output "../../bin/packages"
+#   - cd ../dotnet-fssrgen
+#   - dotnet --verbose pack -c Release --output "../../bin/packages"
+  - sudo ./build.sh CreatePackages

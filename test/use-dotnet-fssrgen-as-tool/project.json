@@ -15,7 +15,7 @@
         }
     },
     "tools": {
-        "dotnet-fssrgen": { "version": "3.2.*" },
+        "dotnet-fssrgen": { "version": "3.3.*" },
         "dotnet-compile-fsc": {
             "version": "1.0.0-preview2-*",
             "imports": "dnxcore50"

@@ -5,10 +5,10 @@ environment:
     - CLI_VERSION: 1.0.0-preview3-003857
 
 build_script:  
-  - ps: .\scripts\create_packages.ps1
-  - ps: .\scripts\run_tests_tool.ps1
-  - ps: .\scripts\run_tests_task.ps1
-  - cmd: build.cmd Nuget
+#   - ps: .\scripts\create_packages.ps1
+#   - ps: .\scripts\run_tests_tool.ps1
+#   - ps: .\scripts\run_tests_task.ps1
+  - cmd: build.cmd RunTests
 
 artifacts:
   - path: 'bin\packages\*.nupkg'
