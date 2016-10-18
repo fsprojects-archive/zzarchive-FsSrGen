@@ -2,6 +2,7 @@
 
 scripts/obtain/install.*
 .dotnet
+/.paket/paket.exe
 
 # generated FsSrGen output files in tests
 test/use-dotnet-fssrgen-as-tool/FSComp.fs
