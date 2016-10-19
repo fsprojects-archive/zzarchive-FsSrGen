@@ -1,6 +1,9 @@
 {
-    "version": "3.0.1",
-    "buildOptions": {
+    "title": "F# String Response Generator - MSBuild Task",
+    "version": "3.1.0",
+    "authors": ["Don Syme","Enrico Sada","Jared Hester"],
+    "buildOptions": {        
+        "outputName": "FSharp.SRGen.Build.Tasks",
         "additionalArguments": [ "--standalone" ],
         "compilerName": "fsc",
         "compile": {
@@ -9,16 +12,30 @@
             ]
         }
     },
-    "tools": {
-        "dotnet-compile-fsc": "1.0.0-preview2-*"
-    },
     "packOptions": {
+        "tags":[ "F#","FSharp","netcore","tooling","build" ],
         "files": {
             "mappings": {
                 "content/": "FSharp.SRGen.targets"
             }
-        }        
+        },
+        "repository": {
+            "type": "git",
+            "url": "https://github.com/fsprojects/FsSrGen"
+        },
+        "licenseUrl": "https://github.com/fsprojects/FsSrGen/blob/master/LICENSE.md" 
     },
+    "tools": {
+        "dotnet-compile-fsc": "1.0.0-preview2-*"
+    },
+    "configurations": {
+        "Release": {
+            "buildOptions": {
+                "optimize": true
+            }
+        },
+        "Debug":{}        
+    },    
     "frameworks": {
         "net46" : {
             "dependencies": {
