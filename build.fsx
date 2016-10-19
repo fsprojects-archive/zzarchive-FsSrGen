@@ -17,13 +17,11 @@ open Fake.AssemblyInfoFile
 let project = "FsSrGen"
 let authors = ["Don Syme";"Enrico Sada";"Jared Hester"]
 
-// let gitOwner = "fsprojects"
-let gitOwner = "cloudRoutine"
+let gitOwner = "fsprojects"
 let gitHome = "https://github.com/" + gitOwner
 
 let gitName = "FsSrGen"
-// let gitRaw = environVarOrDefault "gitRaw" "https://raw.githubusercontent.com/fsprojects"
-let gitRaw = environVarOrDefault "gitRaw" "https://raw.githubusercontent.com/cloudRoutine"
+let gitRaw = environVarOrDefault "gitRaw" "https://raw.githubusercontent.com/fsprojects"
 
 // The rest of the code is standard F# build script
 // --------------------------------------------------------------------------------------
