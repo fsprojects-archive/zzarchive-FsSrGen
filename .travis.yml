@@ -24,22 +24,18 @@ matrix:
       dotnet: "1.0.0-preview2-003131"
       env: DOTNET_SDK_URL=https://dotnetcli.blob.core.windows.net/dotnet/Sdk/rel-1.0.0/dotnet-dev-osx-x64.latest.tar.gz
 
-before install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update               ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install openssl      ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew link --force openssl ; fi
+before install: 
+  - if [[ \"$TRAVIS_OS_NAME\" == \"osx\" ]]; then brew update               ; fi",
+  - if [[ \"$TRAVIS_OS_NAME\" == \"osx\" ]]; then brew install openssl      ; fi",
+  - f [[ \"$TRAVIS_OS_NAME\" == \"osx\" ]]; then brew link --force openssl ;
+  
+install:
+  # Download .NET Core SDK and add to PATH
   - export DOTNET_INSTALL_DIR="$PWD/.dotnetsdk"
   - mkdir -p "$DOTNET_INSTALL_DIR"
   - curl -L "$DOTNET_SDK_URL" | tar -xzv -C "$DOTNET_INSTALL_DIR"
   - export PATH="$DOTNET_INSTALL_DIR:$PATH"
-
-# install:
-#   # Download .NET Core SDK and add to PATH
-#   - export DOTNET_INSTALL_DIR="$PWD/.dotnetsdk"
-#   - mkdir -p "$DOTNET_INSTALL_DIR"
-#   - curl -L "$DOTNET_SDK_URL" | tar -xzv -C "$DOTNET_INSTALL_DIR"
-#   - export PATH="$DOTNET_INSTALL_DIR:$PATH"
-
+  
 # before_script: cd fssrgen
 
 # Build netcore packages
