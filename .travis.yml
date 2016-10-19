@@ -24,35 +24,26 @@ matrix:
       dotnet: "1.0.0-preview2-003131"
       env: DOTNET_SDK_URL=https://dotnetcli.blob.core.windows.net/dotnet/Sdk/rel-1.0.0/dotnet-dev-osx-x64.latest.tar.gz
 
-before install: 
+before install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update               ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install openssl      ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew link --force openssl ; fi
-  # setup full mono on linux
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo sudo apt-get update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo sudo apt-get install mono-complete; fi
 
-  
 install:
   # Download .NET Core SDK and add to PATH
   - export DOTNET_INSTALL_DIR="$PWD/.dotnetsdk"
   - mkdir -p "$DOTNET_INSTALL_DIR"
   - curl -L "$DOTNET_SDK_URL" | tar -xzv -C "$DOTNET_INSTALL_DIR"
   - export PATH="$DOTNET_INSTALL_DIR:$PATH"
-  
-# before_script: cd fssrgen
-
+   
 # Build netcore packages
 script:
-#   - dotnet --info
-#   - cd src/
-#   - dotnet restore --disable-parallel
-#   - cd fssrgen
-#   - dotnet --verbose pack -c Release --output "../../bin/packages"
-#   - cd ../FSharp.SRGen.Build.Tasks
-#   - dotnet --verbose pack -c Release --output "../../bin/packages"
-#   - cd ../dotnet-fssrgen
-#   - dotnet --verbose pack -c Release --output "../../bin/packages"
-  - sudo ./build.sh CreatePackages
+  - dotnet --info
+  - cd src/
+  - dotnet restore --disable-parallel
+  - cd fssrgen
+  - dotnet --verbose pack -c Release --output "../../bin/packages"
+  - cd ../FSharp.SRGen.Build.Tasks
+  - dotnet --verbose pack -c Release --output "../../bin/packages"
+  - cd ../dotnet-fssrgen
+  - dotnet --verbose pack -c Release --output "../../bin/packages"
