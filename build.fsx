@@ -176,9 +176,9 @@ Target "ReleaseBuildTask" (fun _ ->
 let singlePublish projName =
     let singlePackageDir = pkgOutputDir </> projName
     let nupkg =
-        (!!(pkgOutputDir</>(projName + ".*.*.*.nupkg"))).Includes
-        |> List.head
-    CreateDir (pkgOutputDir </> projName)
+        (!!(pkgOutputDir</>(projName + ".*.*.*.nupkg")))
+        |> Seq.head
+    ensureDirectory (pkgOutputDir </> projName)
     MoveFile singlePackageDir nupkg
     Paket.Push (fun p ->
         let apikey =
