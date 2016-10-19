@@ -1,1 +1,4 @@
-3.2.0 - 2016.10.18
+### fssrgen.v3.1.0 - 08.19.2016
+* netcore support
+* additional package metadata
+* optimized build
