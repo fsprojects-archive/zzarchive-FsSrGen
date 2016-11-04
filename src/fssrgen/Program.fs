@@ -343,7 +343,7 @@ open Printf
     // END BOILERPLATE        
     "            
 
-    let RunMain(filename, outFilename, outXmlFilename, projectNameOpt) =
+    let RunMain(filename, outFilename, outXmlFilenameOpt, projectNameOpt) =
         try
             let justfilename = System.IO.Path.GetFileNameWithoutExtension(filename)
             if justfilename |> Seq.exists (fun c -> not(System.Char.IsLetterOrDigit(c))) then
@@ -374,12 +374,14 @@ open Printf
             use out = new System.IO.StreamWriter(outStream)
             fprintfn out "// This is a generated file; the original input is '%s'" filename
             fprintfn out "namespace %s" justfilename
-            fprintfn out "%s" stringBoilerPlatePrefix
-            fprintfn out "type internal SR private() ="
+            if Option.isNone outXmlFilenameOpt then
+                fprintfn out "type internal SR private() ="
+            else
+                fprintfn out "%s" stringBoilerPlatePrefix
+                fprintfn out "type internal SR private() ="
+                let theResourceName = match projectNameOpt with Some p -> sprintf "%s.%s" p justfilename | None -> justfilename
+                fprintfn out "%s" (StringBoilerPlate theResourceName)
 
-            let theResourceName = match projectNameOpt with Some p -> sprintf "%s.%s" p justfilename | None -> justfilename
-
-            fprintfn out "%s" (StringBoilerPlate theResourceName)
             // gen each resource method
             stringInfos |> Seq.iter (fun (lineNum, (optErrNum,ident), str, holes, netFormatString) ->
                 let formalArgs = new System.Text.StringBuilder()
@@ -409,30 +411,35 @@ open Printf
                 let errPrefix = match optErrNum with
                                 | None -> ""
                                 | Some n -> sprintf "%d, " n
-                fprintfn out "    static member %s%s = (%sGetStringFunc(\"%s\",\"%s\") %s)" ident (formalArgs.ToString()) errPrefix ident justPercentsFromFormatString (actualArgs.ToString())
-            )
-            fprintfn out ""
-            // gen validation method
-            fprintfn out "    /// Call this method once to validate that all known resources are valid; throws if not"
-            fprintfn out "    static member RunStartupValidation() ="
-            stringInfos |> Seq.iter (fun (lineNum, (optErrNum,ident), str, holes, netFormatString) ->
-                fprintfn out "        ignore(GetString(\"%s\"))" ident
-            )
-            fprintfn out "        ()"  // in case there are 0 strings, we need the generated code to parse
-            // gen to resx
-            let xd = new System.Xml.XmlDocument()
-            xd.LoadXml(xmlBoilerPlateString)
-            stringInfos |> Seq.iter (fun (lineNum, (optErrNum,ident), str, holes, netFormatString) ->
-                let xn = xd.CreateElement("data")
-                xn.SetAttribute("name",ident) |> ignore
-                xn.SetAttribute("xml:space","preserve") |> ignore
-                let xnc = xd.CreateElement "value"
-                xn.AppendChild xnc |> ignore
-                xnc.AppendChild(xd.CreateTextNode netFormatString) |> ignore
-                xd.LastChild.AppendChild xn |> ignore
-            )
-            use outXmlStream = System.IO.File.Create outXmlFilename
-            xd.Save outXmlStream
+                if Option.isNone outXmlFilenameOpt then
+                    fprintfn out "    static member %s%s = (%ssprintf \"%s\" %s)" ident (formalArgs.ToString()) errPrefix str (actualArgs.ToString())
+                else
+                    fprintfn out "    static member %s%s = (%sGetStringFunc(\"%s\",\"%s\") %s)" ident (formalArgs.ToString()) errPrefix ident justPercentsFromFormatString (actualArgs.ToString())
+                )
+
+            if Option.isSome outXmlFilenameOpt then
+                fprintfn out ""
+                // gen validation method
+                fprintfn out "    /// Call this method once to validate that all known resources are valid; throws if not"
+                fprintfn out "    static member RunStartupValidation() ="
+                stringInfos |> Seq.iter (fun (lineNum, (optErrNum,ident), str, holes, netFormatString) ->
+                    fprintfn out "        ignore(GetString(\"%s\"))" ident
+                )
+                fprintfn out "        ()"  // in case there are 0 strings, we need the generated code to parse
+                // gen to resx
+                let xd = new System.Xml.XmlDocument()
+                xd.LoadXml(xmlBoilerPlateString)
+                stringInfos |> Seq.iter (fun (lineNum, (optErrNum,ident), str, holes, netFormatString) ->
+                    let xn = xd.CreateElement("data")
+                    xn.SetAttribute("name",ident) |> ignore
+                    xn.SetAttribute("xml:space","preserve") |> ignore
+                    let xnc = xd.CreateElement "value"
+                    xn.AppendChild xnc |> ignore
+                    xnc.AppendChild(xd.CreateTextNode netFormatString) |> ignore
+                    xd.LastChild.AppendChild xn |> ignore
+                )
+                use outXmlStream = System.IO.File.Create outXmlFilenameOpt.Value
+                xd.Save outXmlStream
             0
         with 
             e -> JustPrintErr(filename, 0, sprintf "An exception occurred when processing '%s': %s" filename e.Message)
@@ -446,19 +453,25 @@ module MainStuff =
     let Main args = 
 
         match args |> List.ofArray with
+        | [ inputFile; outFile; ] ->
+            let filename = System.IO.Path.GetFullPath(inputFile)  // TODO args validation
+            let outFilename = System.IO.Path.GetFullPath(outFile)  // TODO args validation
+
+            FSSRGen.Implementation.RunMain(filename, outFilename, None, None)
+
         | [ inputFile; outFile; outXml ] ->
             let filename = System.IO.Path.GetFullPath inputFile  // TODO args validation
             let outFilename = System.IO.Path.GetFullPath outFile  // TODO args validation
             let outXmlFilename = System.IO.Path.GetFullPath outXml  // TODO args validation
 
-            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, None)
+            FSSRGen.Implementation.RunMain(filename, outFilename, Some outXmlFilename, None)
 
         | [ inputFile; outFile; outXml; projectName ] ->
             let filename = System.IO.Path.GetFullPath inputFile  // TODO args validation
             let outFilename = System.IO.Path.GetFullPath outFile  // TODO args validation
             let outXmlFilename = System.IO.Path.GetFullPath outXml  // TODO args validation
 
-            FSSRGen.Implementation.RunMain(filename, outFilename, outXmlFilename, Some projectName)
+            FSSRGen.Implementation.RunMain(filename, outFilename, Some outXmlFilename, Some projectName)
 
         | _ ->
             printfn "Error: invalid arguments."
