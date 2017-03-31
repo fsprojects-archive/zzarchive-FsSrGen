@@ -21,7 +21,7 @@ matrix:
     # OSX 10.11
     - os: osx 
       #osx_image: xcode7.2
-      #mono: 4.8.0
+      mono: 4.8.0
       dotnet: "1.0.1"
       env: DOTNET_SDK_URL=https://dotnetcli.blob.core.windows.net/dotnet/Sdk/rel-1.0.1/dotnet-dev-osx-x64.latest.tar.gz
   allow_failures:
