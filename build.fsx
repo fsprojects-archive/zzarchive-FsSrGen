@@ -56,7 +56,6 @@ let pkgOutputDir = root</>"bin"</>"packages"
 
 Target "CreatePackages" (fun _ ->
 
-    dotnet srcDir "restore"
     // Build FsSrGen nupkg
     dotnet genDir "restore"
     dotnet genDir "pack -c Release --output %s" pkgOutputDir
@@ -76,10 +75,9 @@ let cliProjName = "use-dotnet-fssrgen-as-tool"
 let testToolDir = root</>"test"</>cliProjName
 
 Target "RunTestsTool" (fun _ ->
-    dotnet testDir "restore"
     dotnet testToolDir "restore"
-    dotnet testToolDir "fssrgen %s %s %s %s"
-        (testToolDir</>"FSComp.txt") (testToolDir</>"FSComp.fs") (testToolDir</>"FSComp.resx") cliProjName
+    dotnet testToolDir "fssrgen %s %s %s"
+        (testToolDir</>"FSComp.txt") (testToolDir</>"FSComp.fs") (testToolDir</>"FSComp.resx")
     dotnet testToolDir "build"
     dotnet testToolDir "test"
 
@@ -208,7 +206,7 @@ Target "PublishBuildTask" (fun _ ->
 Target "RunTests" DoNothing
 "CreatePackages"
     =?> ("RunTestsTool",isWindows)
-    =?> ("RunTestsTask",isWindows)
+    // =?> ("RunTestsTask",isWindows) // temporarily disabled
     ==> "RunTests"
 
 // Build and run tests

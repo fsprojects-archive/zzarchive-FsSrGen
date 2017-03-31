@@ -241,21 +241,30 @@ open Printf
 
         @"
     // BEGIN BOILERPLATE        
-    
+
     static let getCurrentAssembly () =
-#if DNXCORE50 || NETSTANDARD1_5 || NETSTANDARD1_6 || NETCOREAPP1_0
+#if DNXCORE50 || NETSTANDARD1_5 || NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1
         typeof<SR>.GetTypeInfo().Assembly
 #else
         System.Reflection.Assembly.GetExecutingAssembly()
 #endif
-        
-    static let getTypeInfo (t: System.Type) =
-#if DNXCORE50 || NETSTANDARD1_5 || NETSTANDARD1_6 || NETCOREAPP1_0
-        t.GetTypeInfo()
+
+    static let getTypeInfo (ty: System.Type) =
+#if DNXCORE50 || NETSTANDARD1_5 || NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1
+        ty.GetTypeInfo()
 #else
-        t
+        ty
 #endif
-    
+
+    static let getGenericArguments (ty: System.Type) =
+#if DNXCORE50 || NETSTANDARD1_5 || NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1
+        if ty.GetTypeInfo().IsGenericTypeDefinition then ty.GetTypeInfo().GenericTypeParameters
+        elif ty.GetTypeInfo().IsGenericType then ty.GenericTypeArguments
+        else [||]
+#else
+        ty.GetGenericArguments()
+#endif
+
     static let resources = lazy (new System.Resources.ResourceManager(""" + filename + @""", getCurrentAssembly()))
 
     static let GetString(name:string) =        
@@ -277,7 +286,7 @@ open Printf
 
     static let rec destFunTy (ty:System.Type) =
         if isFunctionType ty then 
-            ty, ty.GetGenericArguments() 
+            ty, getGenericArguments(ty) 
         else
             match getTypeInfo(ty).BaseType with 
             | null -> failwith ""destFunTy: not a function type"" 
