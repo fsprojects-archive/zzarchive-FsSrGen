@@ -1,0 +1,22 @@
+﻿<Project Sdk="FSharp.NET.Sdk;Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Version>3.4.0</Version>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp1.0;netcoreapp1.1</TargetFrameworks>
+    <AssemblyTitle>F# String Response Generator</AssemblyTitle>
+    <Authors>Don Syme;Enrico Sada;Jared Hester</Authors>
+    <PackageTags>F#;FSharp;netcore;tooling;build</PackageTags>
+    <PackageProjectUrl>https://github.com/fsprojects/FsSrGen</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/fsprojects/FsSrGen/blob/master/LICENSE.md</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/fsprojects/FsSrGen</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
+    <PackageReference Include="FSharp.NET.Sdk" Version="1.0.*" PrivateAssets="All" />
+    <PackageReference Include="FSharp.Core" Version="4.1.*" />
+  </ItemGroup>
+</Project>
